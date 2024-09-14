@@ -17,14 +17,6 @@ function TodoList() {
     setEditingTask,
   } = useTasks();
 
-  function handleInputChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setNewTask(event.target.value);
-  }
-
-  function handleEditInputChange(event: React.ChangeEvent<HTMLInputElement>) {
-    setEditingTask({ ...editingTask, value: event.target.value });
-  }
-
   return (
     <div className="px-4">
       <div className="mt-8 text-center">
@@ -34,7 +26,7 @@ function TodoList() {
             type="text"
             placeholder="Enter a task..."
             value={newTask}
-            onChange={handleInputChange}
+            onChange={(event) => setNewTask(event.target.value)}
             onKeyDown={(event) => {
               if (event.key === "Enter") {
                 addTask();
@@ -62,7 +54,9 @@ function TodoList() {
                 <input
                   type="text"
                   value={editingTask.value}
-                  onChange={handleEditInputChange}
+                  onChange={(event) =>
+                    setEditingTask({ ...editingTask, value: event.target.value })
+                  }
                   onKeyDown={(event) => {
                     if (event.key === "Enter") {
                       editTask(index);
@@ -91,7 +85,7 @@ function TodoList() {
                   onChange={() => completeTask(index)}
                 />
                 <span
-                  className={`flex-1 min-w-64 text-start whitespace-nowrap overflow-hidden text-ellipsis ${
+                  className={`flex-1 min-w-64 text-start overflow-hidden text-ellipsis ${
                     task.completed ? "line-through" : ""
                   }`}
                 >
