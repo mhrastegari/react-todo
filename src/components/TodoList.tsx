@@ -35,6 +35,11 @@ function TodoList() {
             placeholder="Enter a task..."
             value={newTask}
             onChange={handleInputChange}
+            onKeyDown={(event) => {
+              if (event.key === "Enter") {
+                addTask();
+              }
+            }}
             className="border-2 border-blue-400 focus:outline-blue-400 rounded-sm px-2 text-lg"
           />
           <button
@@ -58,6 +63,11 @@ function TodoList() {
                   type="text"
                   value={editingTask.value}
                   onChange={handleEditInputChange}
+                  onKeyDown={(event) => {
+                    if (event.key === "Enter") {
+                      editTask(index);
+                    }
+                  }}
                   className="flex-1 w-full border-2 border-teal-500 focus:outline-teal-500 rounded-sm px-2 py-1"
                 />
                 <button
