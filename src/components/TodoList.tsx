@@ -44,7 +44,7 @@ function TodoList() {
         </button>
       </div>
 
-      <ol className="list-none p-0">
+      <ol className="list-none p-0 max-h-[348px] overflow-y-auto">
         {tasks.map((task, index) => (
           <li
             key={index}
@@ -80,7 +80,7 @@ function TodoList() {
                   className="mr-2"
                 />
                 <span
-                  className={`flex-1 text-start ${
+                  className={`flex-1 text-start overflow-hidden text-ellipsis ${
                     task.completed ? "line-through" : ""
                   }`}
                 >
