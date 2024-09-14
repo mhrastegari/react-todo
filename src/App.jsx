@@ -1,8 +1,9 @@
 import { useState } from "react";
+import TodoList from "./TodoList";
 import "./App.css";
 
 function App() {
-  return (<div>Hello world</div>);
+  return (<TodoList/>);
 }
 
 export default App;

@@ -1,5 +1,65 @@
-body {
-  margin: 0;
+.todo-list {
+  margin-top: 6rem;
+  text-align: center;
+  padding-inline: 1rem;
+}
+
+input[type="text"] {
+  font-size: 1rem;
+  padding: 0.125rem;
+  border-radius: 0.25rem;
+}
+
+.task-input {
+  border: 2px solid dodgerblue;
+}
+
+.task-input:focus {
+  outline: 1px solid dodgerblue;
+}
+
+button {
+  border: none;
+  cursor: pointer;
+  padding: 0.25rem;
+  font-weight: bold;
+  border-radius: 0.25rem;
+  margin-inline: 0.25rem;
+  transition: background-color 0.5 ease;
+}
+
+.add-button {
+  color: white;
+  background-color: dodgerblue;
+}
+
+.delete-button {
+  color: white;
+  background-color: tomato;
+}
+
+.move-button {
   padding: 0;
-  font-family: Arial, Helvetica, sans-serif;
+  font-size: 1.5rem;
+  background-color: transparent;
+}
+
+ol {
+  padding: 0;
+}
+
+li {
+  display: flex;
+  padding: 1rem;
+  margin: 0.25rem;
+  list-style: none;
+  text-align: start;
+  align-items: center;
+  border-radius: 0.25rem;
+  border: 1px solid lightgray;
+  background-color: #5f5c5c27;
+}
+
+.text {
+  flex: 1;
 }
