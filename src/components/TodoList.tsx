@@ -1,5 +1,5 @@
 import React from "react";
-import { useTasks } from "./hooks/useTasks";
+import { useTasks } from "../hooks/useTasks";
 
 function TodoList() {
   const {
@@ -79,7 +79,11 @@ function TodoList() {
                   onChange={() => completeTask(index)}
                   className="mr-2"
                 />
-                <span className={`flex-1 text-start ${task.completed ? "line-through" : ""}`}>
+                <span
+                  className={`flex-1 text-start ${
+                    task.completed ? "line-through" : ""
+                  }`}
+                >
                   {task.text}
                 </span>
                 <button
