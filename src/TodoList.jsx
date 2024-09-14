@@ -23,7 +23,7 @@ function TodoList() {
     
     function addTask() {
         if (newTask.trim() !== "") {
-            setTasks([...tasks, { text: newTask }]);
+            setTasks([...tasks, { text: newTask, completed: false }]);
             setNewTask("");
         }
     }
@@ -48,6 +48,13 @@ function TodoList() {
             [updatedTask[index + 1], updatedTask[index]]
             setTasks(updatedTask);
         }
+    }
+
+    function completeTask(index) {
+        const updatedTasks = tasks.map((task, i) =>
+            i === index ? { ...task, completed: !task.completed } : task
+        );
+        setTasks(updatedTasks);
     }
 
     function editTask(index, task = null) {
@@ -94,7 +101,13 @@ function TodoList() {
                             </>
                         ) : (
                             <>
-                                <span className="text">{task.text}</span>
+                            <input 
+                                type="checkbox" 
+                                checked={task.completed} 
+                                onChange={() => completeTask(index)} />
+                                <span className={`text ${task.completed ? "completed" : ""}`}>
+                                    {task.text}
+                                </span>
                                 <button className="edit-button" onClick={() => editTask(index, task)}>Edit</button>
                                 <button className="delete-button" onClick={() => deleteTask(index)}>Delete</button>
                                 <button className="move-button" onClick={() => moveTaskUp(index)}>⬆️</button>

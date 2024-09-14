@@ -81,3 +81,7 @@ li {
 .text {
   flex: 1;
 }
+
+.text.completed {
+  text-decoration: line-through;
+}
