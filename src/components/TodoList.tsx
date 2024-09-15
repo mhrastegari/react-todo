@@ -1,14 +1,29 @@
-import React from 'react';
-import { useTaskState } from '../hooks/useTaskState';
-import { useNewTask } from '../hooks/useNewTask';
-import { useEditTask } from '../hooks/useEditTask';
-import { useTaskActions } from '../hooks/useTaskActions';
+import React, { useEffect, useRef } from "react";
+import { useTaskState } from "../hooks/useTaskState";
+import { useNewTask } from "../hooks/useNewTask";
+import { useEditTask } from "../hooks/useEditTask";
+import { useTaskActions } from "../hooks/useTaskActions";
 
 function TodoList() {
   const { tasks, setTasks } = useTaskState();
   const { newTask, setNewTask, addTask } = useNewTask(setTasks, tasks);
   const { editingTask, setEditingTask, editTask, cancelEdit } = useEditTask(setTasks, tasks);
   const { deleteTask, moveTaskUp, moveTaskDown, completeTask } = useTaskActions(setTasks, tasks);
+
+  const newTaskInputRef = useRef<HTMLInputElement>(null);
+  const editingTaskInputRef = useRef<HTMLInputElement>(null);
+
+  useEffect(() => {
+    if (newTaskInputRef.current) {
+      newTaskInputRef.current.focus();
+    }
+  }, [newTask]);
+
+  useEffect(() => {
+    if (editingTaskInputRef.current) {
+      editingTaskInputRef.current.focus();
+    }
+  }, [editingTask]);
 
   return (
     <div className="flex flex-col h-screen p-4">
@@ -25,6 +40,7 @@ function TodoList() {
                 addTask();
               }
             }}
+            ref={newTaskInputRef}
             className="border-2 border-blue-400 focus:outline-blue-400 rounded-sm px-2 text-lg"
           />
           <button
@@ -48,13 +64,17 @@ function TodoList() {
                   type="text"
                   value={editingTask.value}
                   onChange={(event) =>
-                    setEditingTask({ ...editingTask, value: event.target.value })
+                    setEditingTask({
+                      ...editingTask,
+                      value: event.target.value,
+                    })
                   }
                   onKeyDown={(event) => {
                     if (event.key === "Enter") {
                       editTask(task.index);
                     }
                   }}
+                  ref={editingTaskInputRef}
                   className="flex-1 w-full border-2 border-teal-500 focus:outline-teal-500 rounded-sm px-2 py-1"
                 />
                 <button
