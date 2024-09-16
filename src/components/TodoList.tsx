@@ -13,23 +13,18 @@ function TodoList() {
 
   return (
     <div className="flex flex-col h-screen p-4">
-      <div className="text-center my-4">
-        <h1 className="text-2xl font-bold mb-6">Todo list</h1>
-        <NewTaskInput
-          addTask={addTask}
-          newTask={newTask}
-          setNewTask={setNewTask}
-        />
-      </div>
+      <h1 className="text-2xl text-center font-bold my-4">Todo list</h1>
+      <NewTaskInput
+        addTask={addTask}
+        newTask={newTask}
+        setNewTask={setNewTask}
+      />
       <ol className="list-none flex-1 overflow-y-auto">
         {tasks.length === 0 ? (
           <p className="text-center text-gray-500">No tasks available</p>
         ) : (
           tasks.map((task) => (
-            <li
-              key={task.id}
-              className="flex center flex-wrap gap-2 items-center bg-gray-100 mb-2 px-4 py-3 rounded-md border border-gray-300"
-            >
+            <li key={task.id}>
               <Todo
                 task={task}
                 onEdit={(text) => editTask(task.id, text)}

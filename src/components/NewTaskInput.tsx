@@ -16,7 +16,7 @@ export function NewTaskInput(props: Props) {
   }, [props.newTask]);
 
   return (
-    <div>
+    <div className="flex items-center justify-center mb-4 mt-2">
       <input
         type="text"
         placeholder="Enter a task..."
@@ -28,7 +28,7 @@ export function NewTaskInput(props: Props) {
           }
         }}
         ref={newTaskInputRef}
-        className="border-2 border-blue-400 focus:outline-blue-400 rounded-sm px-2 text-lg"
+        className="border-2 border-blue-400 focus:outline-blue-400 rounded-sm px-2 text-lg max-sm:flex-1"
       />
       <button
         onClick={props.addTask}
