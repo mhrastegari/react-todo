@@ -9,19 +9,16 @@ function TodoList() {
   const { tasks, setTasks } = useTaskState();
   const { editTask } = useEditTask(setTasks, tasks);
   const { newTask, setNewTask, addTask } = useNewTask(setTasks, tasks);
-  const { deleteTask, moveTaskUp, moveTaskDown, toggleTask } = useTaskActions(
-    setTasks,
-    tasks
-  );
+  const { deleteTask, moveTaskUp, moveTaskDown, toggleTask } = useTaskActions(setTasks, tasks);
 
   return (
     <div className="flex flex-col h-screen p-4">
       <div className="text-center my-4">
         <h1 className="text-2xl font-bold mb-6">Todo list</h1>
         <NewTaskInput
+          addTask={addTask}
           newTask={newTask}
           setNewTask={setNewTask}
-          addTask={addTask}
         />
       </div>
       <ol className="list-none flex-1 overflow-y-auto">
@@ -35,11 +32,11 @@ function TodoList() {
             >
               <Todo
                 task={task}
-                onEdit={(text) => editTask(task.index, text)}
-                onDelete={() => deleteTask(task.index)}
+                onEdit={(text) => editTask(task.id, text)}
+                onDelete={() => deleteTask(task.id)}
                 onMoveUp={() => moveTaskUp(task.index)}
                 onMoveDown={() => moveTaskDown(task.index)}
-                onCompleteToggle={() => toggleTask(task.index)}
+                onCompleteToggle={() => toggleTask(task.id)}
               />
             </li>
           ))

@@ -1,9 +1,9 @@
 import { Task } from "../types";
 
 export function useEditTask(setTasks: (tasks: Task[]) => void, tasks: Task[]) {
-  function editTask(index: number, updatedText: string) {
+  function editTask(id: string, updatedText: string) {
     const updatedTasks = tasks.map((task) =>
-      task.index === index ? { ...task, text: updatedText } : task
+      task.id === id ? { ...task, text: updatedText } : task
     );
     setTasks(updatedTasks);
   }

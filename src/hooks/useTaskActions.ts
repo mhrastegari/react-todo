@@ -1,8 +1,8 @@
 import { Task } from "../types";
 
 export function useTaskActions(setTasks: (tasks: Task[]) => void, tasks: Task[]) {
-    function deleteTask(index: number) {
-      setTasks(tasks.filter((task) => task.index !== index));
+    function deleteTask(id: string) {
+      setTasks(tasks.filter((task) => task.id !== id));
     }
   
     function moveTaskUp(index: number) {
@@ -27,9 +27,9 @@ export function useTaskActions(setTasks: (tasks: Task[]) => void, tasks: Task[])
       }
     }
   
-    function toggleTask(index: number) {
+    function toggleTask(id: string) {
       const updatedTasks = tasks.map((task) =>
-        task.index === index ? { ...task, completed: !task.completed } : task
+        task.id === id ? { ...task, completed: !task.completed } : task
       );
       setTasks(updatedTasks);
     }
