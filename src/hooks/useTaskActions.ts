@@ -27,13 +27,13 @@ export function useTaskActions(setTasks: (tasks: Task[]) => void, tasks: Task[])
       }
     }
   
-    function completeTask(index: number) {
+    function toggleTask(index: number) {
       const updatedTasks = tasks.map((task) =>
         task.index === index ? { ...task, completed: !task.completed } : task
       );
       setTasks(updatedTasks);
     }
   
-    return { deleteTask, moveTaskUp, moveTaskDown, completeTask };
+    return { deleteTask, moveTaskUp, moveTaskDown, toggleTask };
   }
   

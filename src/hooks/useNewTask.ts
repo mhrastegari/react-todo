@@ -6,7 +6,7 @@ export function useNewTask(setTasks: (tasks: Task[]) => void, tasks: Task[]) {
 
   function addTask() {
     if (newTask.trim() !== '') {
-      setTasks([...tasks, { text: newTask, index: tasks.length, completed: false }]);
+      setTasks([...tasks, { id: crypto.randomUUID(), text: newTask, index: tasks.length, completed: false }]);
       setNewTask('');
     }
   }
