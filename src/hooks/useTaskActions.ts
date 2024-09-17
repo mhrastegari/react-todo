@@ -5,7 +5,9 @@ export function useTaskActions() {
   const setTasks = useSetTasks();
 
   function deleteTask(id: string) {
-    setTasks(tasks.filter((task) => task.id !== id));
+    const updatedTasks = tasks.filter((task) => task.id !== id);
+    updatedTasks.forEach((task, i) => task.index = i);
+    setTasks(updatedTasks);
   }
 
   function moveTaskUp(index: number) {
