@@ -1,24 +1,20 @@
 import {
   useState,
   useEffect,
-  createContext,
   useContext,
+  createContext,
   PropsWithChildren,
-  Dispatch,
-  SetStateAction,
 } from "react";
-import { Task } from "../types";
+import { Task, TaskContext } from "../types";
 
-const TaskContext = createContext<
-  [Array<Task>, Dispatch<SetStateAction<Array<Task>>>]
->(null!);
+const TaskStateContext = createContext<TaskContext>(null!);
 
 export function useTasks() {
-  return useContext(TaskContext)[0];
+  return useContext(TaskStateContext).tasks;
 }
 
 export function useSetTasks() {
-  return useContext(TaskContext)[1];
+  return useContext(TaskStateContext).setTasks;
 }
 
 export function TaskProvider(props: PropsWithChildren<{}>) {
@@ -36,8 +32,8 @@ export function TaskProvider(props: PropsWithChildren<{}>) {
   }, [tasks]);
 
   return (
-    <TaskContext.Provider value={[tasks, setTasks]}>
+    <TaskStateContext.Provider value={{ tasks, setTasks }}>
       {props.children}
-    </TaskContext.Provider>
+    </TaskStateContext.Provider>
   );
 }

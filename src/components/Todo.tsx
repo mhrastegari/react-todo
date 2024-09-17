@@ -59,7 +59,7 @@ export function Todo(props: Props) {
               props.onEdit(editText);
             }
           }}
-          className={`flex-1 border-2 border-teal-500 focus:outline-teal-500 rounded-sm px-2 py-1 disabled:border-transparent ${
+          className={`flex-1 border-2 border-teal-500 focus:outline-teal-500 rounded-sm px-2 py-1 disabled:bg-transparent disabled:border-transparent ${
             props.task.completed && status === TodoInputState.View ? "line-through" : ""
           }`}
         />
