@@ -1,9 +1,6 @@
-import { Todo } from "./Todo";
+import { useEditTask, useNewTask, useTaskActions, useTaskState } from "../hooks";
 import { NewTaskInput } from "./NewTaskInput";
-import { useNewTask } from "../hooks/useNewTask";
-import { useEditTask } from "../hooks/useEditTask";
-import { useTaskState } from "../hooks/useTaskState";
-import { useTaskActions } from "../hooks/useTaskActions";
+import { Todo } from "./Todo";
 
 function TodoList() {
   const { tasks, setTasks } = useTaskState();
