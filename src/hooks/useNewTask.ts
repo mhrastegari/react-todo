@@ -1,12 +1,19 @@
-import { useState } from 'react';
-import { Task } from "../types";
+import { useState } from "react";
+import { useTasks, useSetTasks } from "../hooks";
 
-export function useNewTask(setTasks: (tasks: Task[]) => void, tasks: Task[]) {
-  const [newTask, setNewTask] = useState('');
+export function useNewTask() {
+  const tasks = useTasks();
+  const setTasks = useSetTasks();
+  const [newTask, setNewTask] = useState<string>("");
 
   function addTask() {
     if (newTask.trim() !== '') {
-      setTasks([...tasks, { id: crypto.randomUUID(), text: newTask, index: tasks.length, completed: false }]);
+      setTasks([...tasks, {
+        id: crypto.randomUUID(),
+        text: newTask,
+        index: tasks.length,
+        completed: false
+      }]);
       setNewTask('');
     }
   }

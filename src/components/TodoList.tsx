@@ -1,12 +1,12 @@
-import { useEditTask, useNewTask, useTaskActions, useTaskState } from "../hooks";
-import { NewTaskInput } from "./NewTaskInput";
 import { Todo } from "./Todo";
+import { NewTaskInput } from "./NewTaskInput";
+import { useEditTask, useNewTask, useTaskActions, useTasks } from "../hooks";
 
 function TodoList() {
-  const { tasks, setTasks } = useTaskState();
-  const { editTask } = useEditTask(setTasks, tasks);
-  const { newTask, setNewTask, addTask } = useNewTask(setTasks, tasks);
-  const { deleteTask, moveTaskUp, moveTaskDown, toggleTask } = useTaskActions(setTasks, tasks);
+  const tasks = useTasks();
+  const { editTask } = useEditTask();
+  const { newTask, setNewTask, addTask } = useNewTask();
+  const { deleteTask, moveTaskUp, moveTaskDown, toggleTask } = useTaskActions();
 
   return (
     <div className="flex flex-col h-screen p-4">
