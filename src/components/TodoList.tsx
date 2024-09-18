@@ -1,10 +1,17 @@
 import { Todo } from "./Todo";
 import { NewTaskInput } from "./NewTaskInput";
-import { useEditTask, useNewTask, useTaskActions, useTasks } from "../hooks";
+import {
+  useTasks,
+  useEditTask,
+  useDragTask,
+  useNewTask,
+  useTaskActions,
+} from "../hooks";
 
 function TodoList() {
   const tasks = useTasks();
   const { editTask } = useEditTask();
+  const { dragStart, dragOver, drop } = useDragTask();
   const { newTask, setNewTask, addTask } = useNewTask();
   const { deleteTask, moveTaskUp, moveTaskDown, toggleTask } = useTaskActions();
 
@@ -16,12 +23,18 @@ function TodoList() {
         newTask={newTask}
         setNewTask={setNewTask}
       />
-      <ol className="list-none flex-1 overflow-y-auto">
-        {tasks.length === 0 ? (
-          <p className="text-center text-gray-500">No tasks available</p>
-        ) : (
-          tasks.map((task) => (
-            <li key={task.id}>
+      {tasks.length === 0 ? (
+        <p className="text-center text-gray-500">No tasks available</p>
+      ) : (
+        <ol className="list-none flex-1 overflow-y-auto">
+          {tasks.map((task) => (
+            <li
+              key={task.id}
+              draggable
+              onDragStart={() => dragStart(task.index)}
+              onDragOver={dragOver}
+              onDrop={() => drop(task.index)}
+            >
               <Todo
                 task={task}
                 onEdit={(text) => editTask(task.id, text)}
@@ -31,9 +44,9 @@ function TodoList() {
                 onCompleteToggle={() => toggleTask(task.id)}
               />
             </li>
-          ))
-        )}
-      </ol>
+          ))}
+        </ol>
+      )}
     </div>
   );
 }

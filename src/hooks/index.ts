@@ -1,3 +1,4 @@
+export * from "./useDragTask";
 export * from './useEditTask';
 export * from './useNewTask';
 export * from './useTaskActions';
