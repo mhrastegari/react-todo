@@ -3,7 +3,7 @@ import { useState, useEffect, useRef } from "react";
 
 enum TodoInputState {
   View,
-  Edit
+  Edit,
 }
 
 interface Props {
@@ -33,6 +33,12 @@ export function Todo(props: Props) {
     }
   }, [props.task.text, status]);
 
+  const formattedDate = new Intl.DateTimeFormat("en-US", {
+    year: "numeric",
+    month: "long",
+    day: "numeric",
+  }).format(new Date(props.task.createdAt));
+
   return (
     <div className="flex center flex-wrap gap-2 items-center bg-gray-100 mb-2 px-4 py-3 rounded-md border border-gray-300">
       <div className="flex flex-1 items-center w-full">
@@ -40,8 +46,8 @@ export function Todo(props: Props) {
           <input
             type="checkbox"
             checked={props.task.completed}
-            onChange={(ev) => {
-              props.onCompleteToggle(ev.target.checked);
+            onChange={(e) => {
+              props.onCompleteToggle(e.target.checked);
             }}
           />
         ) : null}
@@ -49,18 +55,20 @@ export function Todo(props: Props) {
           value={editText}
           ref={editingTaskInputRef}
           disabled={status === TodoInputState.View}
-          onChange={(ev) => {
-            setEditText(ev.target.value);
-            props.onEdit(ev.target.value);
+          onChange={(e) => {
+            setEditText(e.target.value);
+            props.onEdit(e.target.value);
           }}
-          onKeyDown={(event) => {
-            if (event.key === "Enter") {
+          onKeyDown={(e) => {
+            if (e.key === "Enter") {
               setStatus(TodoInputState.View);
               props.onEdit(editText);
             }
           }}
           className={`flex-1 border-2 border-teal-500 focus:outline-teal-500 rounded-sm px-2 py-1 disabled:bg-transparent disabled:border-transparent ${
-            props.task.completed && status === TodoInputState.View ? "line-through" : ""
+            props.task.completed && status === TodoInputState.View
+              ? "line-through"
+              : ""
           }`}
         />
       </div>
@@ -75,34 +83,37 @@ export function Todo(props: Props) {
           Done
         </button>
       ) : (
-        <div className="flex gap-2 items-center">
-          <button
-            onClick={() => {
-              setStatus(TodoInputState.Edit);
-            }}
-            className="bg-yellow-400 font-bold rounded-sm px-3 py-1 transition duration-300 hover:bg-yellow-500"
-          >
-            Edit
-          </button>
-          <button
-            onClick={() => props.onDelete(props.task.index)}
-            className="bg-red-400 text-white font-bold rounded-sm px-3 py-1 transition duration-300 hover:bg-red-500"
-          >
-            Delete
-          </button>
-          <button
-            onClick={() => props.onMoveUp(props.task.index)}
-            className="text-lg font-bold rounded-sm px-2 py-1"
-          >
-            ⬆️
-          </button>
-          <button
-            onClick={() => props.onMoveDown(props.task.index)}
-            className="text-lg font-bold rounded-sm px-2 py-1"
-          >
-            ⬇️
-          </button>
-        </div>
+        <>
+          <span className="text-gray-500">{formattedDate}</span>
+          <div className="flex gap-2 items-center">
+            <button
+              onClick={() => {
+                setStatus(TodoInputState.Edit);
+              }}
+              className="bg-yellow-400 font-bold rounded-sm px-3 py-1 transition duration-300 hover:bg-yellow-500"
+            >
+              Edit
+            </button>
+            <button
+              onClick={() => props.onDelete(props.task.index)}
+              className="bg-red-400 text-white font-bold rounded-sm px-3 py-1 transition duration-300 hover:bg-red-500"
+            >
+              Delete
+            </button>
+            <button
+              onClick={() => props.onMoveUp(props.task.index)}
+              className="text-lg font-bold rounded-sm px-2 py-1"
+            >
+              ⬆️
+            </button>
+            <button
+              onClick={() => props.onMoveDown(props.task.index)}
+              className="text-lg font-bold rounded-sm px-2 py-1"
+            >
+              ⬇️
+            </button>
+          </div>
+        </>
       )}
     </div>
   );

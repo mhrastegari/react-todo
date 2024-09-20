@@ -4,6 +4,7 @@ export interface Task {
   id: string;
   text: string;
   index: number;
+  createdAt: Date;
   completed: boolean;
 }
 

@@ -21,9 +21,9 @@ export function NewTaskInput(props: Props) {
         type="text"
         placeholder="Enter a task..."
         value={props.newTask}
-        onChange={(event) => props.setNewTask(event.target.value)}
-        onKeyDown={(event) => {
-          if (event.key === "Enter") {
+        onChange={(e) => props.setNewTask(e.target.value)}
+        onKeyDown={(e) => {
+          if (e.key === "Enter") {
             props.addTask();
           }
         }}

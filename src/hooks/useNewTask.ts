@@ -12,7 +12,8 @@ export function useNewTask() {
         id: crypto.randomUUID(),
         text: newTask,
         index: tasks.length,
-        completed: false
+        createdAt: new Date(),
+        completed: false,
       }]);
       setNewTask('');
     }
