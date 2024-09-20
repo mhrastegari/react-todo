@@ -1,8 +1,11 @@
 import { Todo } from "./Todo";
+import { TaskSort } from "../types";
 import { NewTaskInput } from "./NewTaskInput";
 import {
   useTasks,
   useEditTask,
+  useSortBy,
+  useSetSortBy,
   useDragTask,
   useNewTask,
   useTaskActions,
@@ -10,6 +13,8 @@ import {
 
 function TodoList() {
   const tasks = useTasks();
+  const sortBy = useSortBy();
+  const setSortBy = useSetSortBy();
   const { editTask } = useEditTask();
   const { dragStart, dragOver, drop } = useDragTask();
   const { newTask, setNewTask, addTask } = useNewTask();
@@ -23,6 +28,20 @@ function TodoList() {
         newTask={newTask}
         setNewTask={setNewTask}
       />
+      <div className="mb-4">
+        <label htmlFor="sort-by" className="me-2">
+          Sort by:
+        </label>
+        <select
+          id="sort-by"
+          value={sortBy}
+          onChange={(e) => setSortBy(parseInt(e.target.value))}
+        >
+          <option value={TaskSort.None}>None</option>
+          <option value={TaskSort.Alphabetical}>Alphabetical</option>
+          <option value={TaskSort.Date}>Date</option>
+        </select>
+      </div>
       {tasks.length === 0 ? (
         <p className="text-center text-gray-500">No tasks available</p>
       ) : (
@@ -30,7 +49,7 @@ function TodoList() {
           {tasks.map((task) => (
             <li
               key={task.id}
-              draggable
+              draggable={sortBy === TaskSort.None}
               onDragStart={() => dragStart(task.index)}
               onDragOver={dragOver}
               onDrop={() => drop(task.index)}
