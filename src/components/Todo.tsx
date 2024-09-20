@@ -1,4 +1,5 @@
-import { Task } from "../types";
+import { useSortBy } from "../hooks";
+import { Task, TaskSort } from "../types";
 import { useState, useEffect, useRef } from "react";
 
 enum TodoInputState {
@@ -16,6 +17,7 @@ interface Props {
 }
 
 export function Todo(props: Props) {
+  const sortBy = useSortBy();
   const [status, setStatus] = useState<TodoInputState>(TodoInputState.View);
   const [editText, setEditText] = useState<string>(props.task.text);
 
@@ -100,18 +102,22 @@ export function Todo(props: Props) {
             >
               Delete
             </button>
-            <button
-              onClick={() => props.onMoveUp(props.task.index)}
-              className="text-lg font-bold rounded-sm px-2 py-1"
-            >
-              ⬆️
-            </button>
-            <button
-              onClick={() => props.onMoveDown(props.task.index)}
-              className="text-lg font-bold rounded-sm px-2 py-1"
-            >
-              ⬇️
-            </button>
+            {sortBy === TaskSort.None ? (
+              <>
+                <button
+                  onClick={() => props.onMoveUp(props.task.index)}
+                  className="text-lg font-bold rounded-sm px-2 py-1"
+                >
+                  ⬆️
+                </button>
+                <button
+                  onClick={() => props.onMoveDown(props.task.index)}
+                  className="text-lg font-bold rounded-sm px-2 py-1"
+                >
+                  ⬇️
+                </button>
+              </>
+            ) : null}
           </div>
         </>
       )}
