@@ -1,5 +1,5 @@
 import { Todo } from "./Todo";
-import { TaskSort } from "../types";
+import { TaskSort, TaskSorts } from "../types";
 import { NewTaskInput } from "./NewTaskInput";
 import {
   useTasks,
@@ -35,11 +35,13 @@ function TodoList() {
         <select
           id="sort-by"
           value={sortBy}
-          onChange={(e) => setSortBy(parseInt(e.target.value))}
+          onChange={(e) => setSortBy(e.target.value as TaskSort)}
         >
-          <option value={TaskSort.None}>None</option>
-          <option value={TaskSort.Alphabetical}>Alphabetical</option>
-          <option value={TaskSort.Date}>Date</option>
+          {TaskSorts.map((sort) => (
+            <option key={sort} value={sort}>
+              {sort.charAt(0).toUpperCase() + sort.slice(1)}
+            </option>
+          ))}
         </select>
       </div>
       {tasks.length === 0 ? (
@@ -49,7 +51,7 @@ function TodoList() {
           {tasks.map((task) => (
             <li
               key={task.id}
-              draggable={sortBy === TaskSort.None}
+              draggable={sortBy === "none"}
               onDragStart={() => dragStart(task.index)}
               onDragOver={dragOver}
               onDrop={() => drop(task.index)}

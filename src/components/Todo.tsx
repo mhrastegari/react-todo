@@ -1,11 +1,8 @@
+import { Task } from "../types";
 import { useSortBy } from "../hooks";
-import { Task, TaskSort } from "../types";
 import { useState, useEffect, useRef } from "react";
 
-enum TodoInputState {
-  View,
-  Edit,
-}
+type TodoInputState = "view" | "edit";
 
 interface Props {
   task: Task;
@@ -18,33 +15,27 @@ interface Props {
 
 export function Todo(props: Props) {
   const sortBy = useSortBy();
-  const [status, setStatus] = useState<TodoInputState>(TodoInputState.View);
+  const [status, setStatus] = useState<TodoInputState>("view");
   const [editText, setEditText] = useState<string>(props.task.text);
 
   const editingTaskInputRef = useRef<HTMLInputElement>(null);
 
   useEffect(() => {
-    if (editingTaskInputRef.current && status === TodoInputState.Edit) {
+    if (editingTaskInputRef.current && status === "edit") {
       editingTaskInputRef.current.focus();
     }
   }, [status]);
 
   useEffect(() => {
-    if (status === TodoInputState.View) {
+    if (status === "view") {
       setEditText(props.task.text);
     }
   }, [props.task.text, status]);
 
-  const formattedDate = new Intl.DateTimeFormat("en-US", {
-    year: "numeric",
-    month: "long",
-    day: "numeric",
-  }).format(new Date(props.task.createdAt));
-
   return (
     <div className="flex center flex-wrap gap-2 items-center bg-gray-100 mb-2 px-4 py-3 rounded-md border border-gray-300">
       <div className="flex flex-1 items-center w-full">
-        {status === TodoInputState.View ? (
+        {status === "view" ? (
           <input
             type="checkbox"
             checked={props.task.completed}
@@ -56,28 +47,26 @@ export function Todo(props: Props) {
         <input
           value={editText}
           ref={editingTaskInputRef}
-          disabled={status === TodoInputState.View}
+          disabled={status === "view"}
           onChange={(e) => {
             setEditText(e.target.value);
             props.onEdit(e.target.value);
           }}
           onKeyDown={(e) => {
             if (e.key === "Enter") {
-              setStatus(TodoInputState.View);
+              setStatus("view");
               props.onEdit(editText);
             }
           }}
           className={`flex-1 border-2 border-teal-500 focus:outline-teal-500 rounded-sm px-2 py-1 disabled:bg-transparent disabled:border-transparent ${
-            props.task.completed && status === TodoInputState.View
-              ? "line-through"
-              : ""
+            props.task.completed && status === "view" ? "line-through" : ""
           }`}
         />
       </div>
-      {status === TodoInputState.Edit ? (
+      {status === "edit" ? (
         <button
           onClick={() => {
-            setStatus(TodoInputState.View);
+            setStatus("view");
             props.onEdit(editText);
           }}
           className="bg-teal-500 text-white font-bold rounded-sm px-3 py-1 transition duration-300 hover:bg-teal-600"
@@ -86,11 +75,13 @@ export function Todo(props: Props) {
         </button>
       ) : (
         <>
-          <span className="text-gray-500">{formattedDate}</span>
+          <span className="text-gray-500">
+            {props.task.createdAt.toDateString()}
+          </span>
           <div className="flex gap-2 items-center">
             <button
               onClick={() => {
-                setStatus(TodoInputState.Edit);
+                setStatus("edit");
               }}
               className="bg-yellow-400 font-bold rounded-sm px-3 py-1 transition duration-300 hover:bg-yellow-500"
             >
@@ -102,7 +93,7 @@ export function Todo(props: Props) {
             >
               Delete
             </button>
-            {sortBy === TaskSort.None ? (
+            {sortBy === "none" ? (
               <>
                 <button
                   onClick={() => props.onMoveUp(props.task.index)}

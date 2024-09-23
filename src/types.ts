@@ -8,15 +8,12 @@ export interface Task {
   completed: boolean;
 }
 
-export enum TaskSort {
-  None,
-  Alphabetical,
-  Date
-}
-
 export interface TaskContext {
   tasks: Task[];
   setTasks: Dispatch<SetStateAction<Task[]>>;
-  sortBy: number;
-  setSortBy: Dispatch<SetStateAction<number>>;
+  sortBy: TaskSort;
+  setSortBy: Dispatch<SetStateAction<TaskSort>>;
 }
+
+export const TaskSorts = ["none", "alphabetical", "date"] as const;
+export type TaskSort = (typeof TaskSorts)[number];

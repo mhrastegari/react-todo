@@ -1,4 +1,5 @@
 import {
+  useMemo,
   useState,
   useEffect,
   useContext,
@@ -28,10 +29,15 @@ export function useSetSortBy() {
 export function TaskProvider(props: PropsWithChildren<{}>) {
   const [tasks, setTasks] = useState<Array<Task>>(() => {
     const savedTasks = localStorage.getItem("tasks");
-    return savedTasks ? JSON.parse(savedTasks) : [];
+    return savedTasks
+      ? JSON.parse(savedTasks).map((task: Task) => ({
+          ...task,
+          createdAt: new Date(task.createdAt),
+        }))
+      : [];
   });
 
-  const [sortBy, setSortBy] = useState<number>(TaskSort.None);
+  const [sortBy, setSortBy] = useState<TaskSort>("none");
 
   useEffect(() => {
     if (tasks.length > 0) {
@@ -41,22 +47,24 @@ export function TaskProvider(props: PropsWithChildren<{}>) {
     }
   }, [tasks]);
 
-  useEffect(() => {
-    const sortedTasks = [...tasks];
-  
-    if (sortBy === TaskSort.Alphabetical) {
-      sortedTasks.sort((a, b) => a.text.localeCompare(b.text));
-    } else if (sortBy === TaskSort.Date) {
-      sortedTasks.sort((a, b) => new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime());
+  const sortedTasks = useMemo(() => {
+    switch (sortBy) {
+      case "alphabetical":
+        return tasks.toSorted((a, b) => a.text.localeCompare(b.text));
+      case "date":
+        return tasks.toSorted(
+          (a, b) =>
+            new Date(a.createdAt).getTime() - new Date(b.createdAt).getTime()
+        );
+      default:
+        return tasks;
     }
-  
-    if (JSON.stringify(sortedTasks) !== JSON.stringify(tasks)) {
-      setTasks(sortedTasks);
-    }
-  }, [sortBy, tasks]);  
+  }, [tasks, sortBy]);
 
   return (
-    <TaskStateContext.Provider value={{ tasks, setTasks, sortBy, setSortBy }}>
+    <TaskStateContext.Provider
+      value={{ tasks: sortedTasks, setTasks, sortBy, setSortBy }}
+    >
       {props.children}
     </TaskStateContext.Provider>
   );
