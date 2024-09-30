@@ -1,20 +1,24 @@
-import { Todo } from "./Todo";
-import { TaskSort, TaskSorts } from "../types";
-import { NewTaskInput } from "./NewTaskInput";
 import {
-  useTasks,
   useEditTask,
   useSortBy,
   useSetSortBy,
+  useFilter,
+  useSetFilter,
   useDragTask,
   useNewTask,
   useTaskActions,
+  useDisplayedTasks,
 } from "../hooks";
+import { Todo } from "./Todo";
+import { NewTaskInput } from "./NewTaskInput";
+import { TaskSort, TaskSorts, TaskFilter, TaskFilters } from "../types";
 
 function TodoList() {
-  const tasks = useTasks();
+  const tasks = useDisplayedTasks();
   const sortBy = useSortBy();
   const setSortBy = useSetSortBy();
+  const filter = useFilter();
+  const setFilter = useSetFilter();
   const { editTask } = useEditTask();
   const { dragStart, dragOver, drop } = useDragTask();
   const { newTask, setNewTask, addTask } = useNewTask();
@@ -28,21 +32,39 @@ function TodoList() {
         newTask={newTask}
         setNewTask={setNewTask}
       />
-      <div className="mb-4">
-        <label htmlFor="sort-by" className="me-2">
-          Sort by:
-        </label>
-        <select
-          id="sort-by"
-          value={sortBy}
-          onChange={(e) => setSortBy(e.target.value as TaskSort)}
-        >
-          {TaskSorts.map((sort) => (
-            <option key={sort} value={sort}>
-              {sort.charAt(0).toUpperCase() + sort.slice(1)}
-            </option>
-          ))}
-        </select>
+      <div className="flex justify-between mb-4">
+        <div>
+          <label htmlFor="sort-by" className="me-2">
+            Sort by:
+          </label>
+          <select
+            id="sort-by"
+            value={sortBy}
+            onChange={(e) => setSortBy(e.target.value as TaskSort)}
+          >
+            {TaskSorts.map((sort) => (
+              <option key={sort} value={sort}>
+                {sort.charAt(0).toUpperCase() + sort.slice(1)}
+              </option>
+            ))}
+          </select>
+        </div>
+        <div>
+          <label htmlFor="filter" className="me-2">
+            Filter:
+          </label>
+          <select
+            id="filter"
+            value={filter}
+            onChange={(e) => setFilter(e.target.value as TaskFilter)}
+          >
+            {TaskFilters.map((filter) => (
+              <option key={filter} value={filter}>
+                {filter.charAt(0).toUpperCase() + filter.slice(1)}
+              </option>
+            ))}
+          </select>
+        </div>
       </div>
       {tasks.length === 0 ? (
         <p className="text-center text-gray-500">No tasks available</p>

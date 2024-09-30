@@ -1,9 +1,10 @@
 import { DragEvent, useState } from "react";
-import { useSetTasks, useTasks } from "./useTaskState";
+import { useTasks, useSetTasks, useDisplayedTasks } from "./useTaskState";
 
 export function useDragTask() {
   const tasks = useTasks();
   const setTasks = useSetTasks();
+  const displayedTasks = useDisplayedTasks();
   const [draggedTaskIndex, setDraggedTaskIndex] = useState<number | null>(null);
 
   function dragStart(index: number) {
@@ -15,14 +16,17 @@ export function useDragTask() {
   }
 
   function drop(index: number) {
-    if (draggedTaskIndex !== null) {
-      const updatedTasks = [...tasks];
-      const [draggedTask] = updatedTasks.splice(draggedTaskIndex, 1);
-      updatedTasks.splice(index, 0, draggedTask);
+    if (draggedTaskIndex === null) return;
 
-      updatedTasks.forEach((task, i) => (task.index = i));
-      setTasks(updatedTasks);
-    }
+    const updatedTasks = [...tasks];
+    const [draggedTask] = updatedTasks.splice(draggedTaskIndex, 1);
+
+    const targetIndex = tasks.findIndex(task => task.id === displayedTasks[index].id);
+
+    updatedTasks.splice(targetIndex, 0, draggedTask);
+    updatedTasks.forEach((task, i) => (task.index = i));
+    
+    setTasks(updatedTasks);
     setDraggedTaskIndex(null);
   }
 
